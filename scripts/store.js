@@ -51,6 +51,5 @@ const store = (function () {
     findByID, 
     addItem,
     findAndToggleChecked,
-    fin
   };
 }());
