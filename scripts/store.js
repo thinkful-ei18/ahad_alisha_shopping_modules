@@ -13,14 +13,14 @@ const store = (function () {
   const hideCheckedItems = false;
   const searchTerm = '';
 
-  const findByID = function(id) {
-    return this.items.find();
+  const findById = function(id) {
+    return this.items.find(item => item.id===id);
   };
 
   const addItem = function(name) {
     try {
-      Item;
-      this.items.push(Item);
+      Item.validateName(name);
+      this.items.push(Item.create(name));
     }
     catch (err){
       console.log('Error:' + err.message);
@@ -28,16 +28,21 @@ const store = (function () {
   };
 
   const findAndToggleChecked = function(id) {
-    return this.findById() === !this.findByID();
+    return this.findById() === !this.findById();
   };
 
-  const findAndUpdate = function(id, newName) {
+  const editListItemName = function(id, newName) {
     // once the input field is updated locate the UID and newly typed grocery item.
     // then run it through the try/catch block below
+    // console.log("Testing");
     try {
-      newName;
+      Item.validateName(newName);
       console.log(newName);
-      findByID;
+      // findById;
+      let updatedItem=this.findById(id);
+      updatedItem.name=newName;
+      console.log(this.items);
+
     }
     catch (err) {
       console.log('Cannot update name:' + err.message);
@@ -48,9 +53,9 @@ const store = (function () {
     items,
     hideCheckedItems,
     searchTerm,
-    findByID, 
+    findById, 
     addItem,
     findAndToggleChecked,
-    fin
-  };
+    editListItemName
+   };
 }());
