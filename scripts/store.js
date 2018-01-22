@@ -50,8 +50,8 @@ const store = (function () {
 
   const findAndDelete = function(id) {
     console.log(id);
-    let deletedItem = this.items.filter(item => this.items.id !== id);
-    console.log(deletedItem);
+    this.items= this.items.filter(item => item.id !== id);
+    // console.log(deletedItem);
   };
 
   // function findAndDelete(id) {
