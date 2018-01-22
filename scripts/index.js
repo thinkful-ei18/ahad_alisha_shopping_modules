@@ -8,5 +8,8 @@ $(document).ready(function() {
   shoppingList.render();
 });
 
-console.log(store);
+// console.log(store);
+// console.log(foo);
+
+console.log(Item);
 console.log(foo);
