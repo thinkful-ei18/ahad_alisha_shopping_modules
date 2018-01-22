@@ -2,20 +2,20 @@
 /* global cuid */
 
 const Item = (function(){
-  const foo = 'bar';
+  // const foo = 'bar';
   return {
     validateName,
     create
   };  
 }());
 
-function validateName(name) {
+const validateName = function(name) {
   if (!name) {
     throw new Error('Name does not exist');
   }
 }
 
-function create(name) {
+const create = function(name) {
   return {
     id: cuid(),
     name,
