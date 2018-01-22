@@ -1,8 +1,10 @@
+'use strict';
 /* global store, cuid */
 
 // eslint-disable-next-line no-unused-vars
 const shoppingList = (function(){
 
+// private methods
   function generateItemElement(item) {
     let itemTitle = `<span class="shopping-item shopping-item__checked">${item.name}</span>`;
     if (!item.checked) {
@@ -34,25 +36,7 @@ const shoppingList = (function(){
   }
   
   
-  function render() {
-    // Filter item list if store prop is true by item.checked === false
-    let items = store.items;
-    if (store.hideCheckedItems) {
-      items = store.items.filter(item => !item.checked);
-    }
-  
-    // Filter item list if store prop `searchTerm` is not empty
-    if (store.searchTerm) {
-      items = store.items.filter(item => item.name.includes(store.searchTerm));
-    }
-  
-    // render the shopping list in the DOM
-    console.log('`render` ran');
-    const shoppingListItemsString = generateShoppingItemsString(items);
-  
-    // insert that HTML into the DOM
-    $('.js-shopping-list').html(shoppingListItemsString);
-  }
+ 
   
   
   function addItemToShoppingList(itemName) {
@@ -144,6 +128,28 @@ const shoppingList = (function(){
       render();
     });
   }
+
+
+  // public methods
+  function render() {
+    // Filter item list if store prop is true by item.checked === false
+    let items = store.items;
+    if (store.hideCheckedItems) {
+      items = store.items.filter(item => !item.checked);
+    }
+
+    // Filter item list if store prop `searchTerm` is not empty
+    if (store.searchTerm) {
+      items = store.items.filter(item => item.name.includes(store.searchTerm));
+    }
+
+    // render the shopping list in the DOM
+    console.log('`render` ran');
+    const shoppingListItemsString = generateShoppingItemsString(items);
+
+    // insert that HTML into the DOM
+    $('.js-shopping-list').html(shoppingListItemsString);
+  }
   
   function bindEventListeners() {
     handleNewItemSubmit();
@@ -155,6 +161,7 @@ const shoppingList = (function(){
   }
 
   // This object contains the only exposed methods from this module:
+  // everything inside the return becomes a global value
   return {
     render: render,
     bindEventListeners: bindEventListeners,
