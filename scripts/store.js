@@ -2,8 +2,7 @@
 /* global cuid Item */
 
 const store = (function () {
-  const foo = 'bar';
-  
+
   const items = [
     { id: cuid(), name: 'apples', checked: false },
     { id: cuid(), name: 'oranges', checked: false },
@@ -13,8 +12,9 @@ const store = (function () {
   const hideCheckedItems = false;
   const searchTerm = '';
 
+  
   const findById = function(id) {
-    return this.items.find(item => item.id===id);
+    return this.items.find( item => item.id === id );
   };
 
   const addItem = function(name) {
@@ -28,20 +28,15 @@ const store = (function () {
   };
 
   const findAndToggleChecked = function(id) {
-    return this.findById() === !this.findById();
+    let item = this.findById(id);
+    item.checked = !item.checked;
   };
 
-  const editListItemName = function(id, newName) {
-    // once the input field is updated locate the UID and newly typed grocery item.
-    // then run it through the try/catch block below
-    // console.log("Testing");
+  const findAndUpdateName = function(id, newName) {
     try {
       Item.validateName(newName);
-      console.log(newName);
-      let updatedItem=this.findById(id);
-      updatedItem.name=newName;
-      console.log(this.items);
-
+      let updatedItem = this.findById(id); // this returns a single item's object
+      updatedItem.name = newName; // this changes the name of that object
     }
     catch (err) {
       console.log('Cannot update name:' + err.message);
@@ -49,15 +44,10 @@ const store = (function () {
   };
 
   const findAndDelete = function(id) {
-    console.log(id);
-    this.items= this.items.filter(item => item.id !== id);
-    // console.log(deletedItem);
+    this.items = this.items.filter(item => item.id !== id);
   };
 
-  // function findAndDelete(id) {
-  //   let deletedItem = this.items.filter(item => this.items.id !== id);
-  //   console.log(deletedItem);
-  // }
+ 
 
 
   return {
@@ -67,7 +57,7 @@ const store = (function () {
     findById, 
     addItem,
     findAndToggleChecked,
-    editListItemName,
+    findAndUpdateName,
     findAndDelete
   };
 }());

@@ -36,37 +36,20 @@ const shoppingList = (function(){
   }
   
   
- 
-  
-  
-  function addItemToShoppingList(itemName) {
-    try{
-      Item.validateName(itemName);
-      Item.create(itemName);
-      store.items.push(Item.create(itemName));
-      render();
-    }
-    catch(error){
-      console.log('Cannot add item:' + error.message);
-    }
-  }
-  
+
   function handleNewItemSubmit() {
     $('#js-shopping-list-form').submit(function (event) {
       event.preventDefault();
       const newItemName = $('.js-shopping-list-entry').val();
       $('.js-shopping-list-entry').val('');
-      addItemToShoppingList(newItemName);
+      store.addItem(newItemName);
+      // console.log('Adding a new item');
       render();
     });
   }
   
-  function toggleCheckedForListItem(id) {
-    const foundItem = store.items.find(item => item.id === id);
-    foundItem.checked = !foundItem.checked;
-  }
   
-  
+
   function getItemIdFromElement(item) {
     return $(item)
       .closest('.js-item-element')
@@ -76,20 +59,16 @@ const shoppingList = (function(){
   function handleItemCheckClicked() {
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
-      toggleCheckedForListItem(id);
+      // toggleCheckedForListItem(id);
+      // store.findById(id);
+      // console.log('checking off items with find by id');
+      store.findAndToggleChecked(id);
+      console.log('checking off items with find and toggle checked');
       render();
     });
   }
   
-  function deleteListItem(id) {
-    const index = store.items.findIndex(item => item.id === id);
-    store.items.splice(index, 1);
-  }
-  
-  function editListItemName(id, itemName) {
-    const item = store.items.find(item => item.id === id);
-    item.name = itemName;
-  }
+
   
   function toggleCheckedItemsFilter() {
     store.hideCheckedItems = !store.hideCheckedItems;
@@ -98,7 +77,8 @@ const shoppingList = (function(){
   function setSearchTerm(val) {
     store.searchTerm = val;
   }
-  
+
+
   
   function handleDeleteItemClicked() {
     // like in `handleItemCheckClicked`, we use event delegation
@@ -107,30 +87,36 @@ const shoppingList = (function(){
       const id = getItemIdFromElement(event.currentTarget);
       // delete the item
       store.findAndDelete(id);
-      // deleteListItem(id);
+      // console.log('just deleted an item!');
       // render the updated shopping list
       render();
     });
   }
-  
+
+ 
+
   function handleEditShoppingItemSubmit() {
     $('.js-shopping-list').on('submit', '#js-edit-item', event => {
       event.preventDefault();
-      console.log("Editing");
       const id = getItemIdFromElement(event.currentTarget);
       const itemName = $(event.currentTarget).find('.shopping-item').val();
-      store.editListItemName(id, itemName);
+      store.findAndUpdateName(id, itemName);
+      // console.log('whoops! need a new grocery item!');
       render();
     });
   }
   
+  
+
   function handleToggleFilterClick() {
     $('.js-filter-checked').click(() => {
       toggleCheckedItemsFilter();
+      // console.log('no need to see what I already have');
       render();
     });
   }
   
+
   function handleShoppingListSearch() {
     $('.js-shopping-list-search-entry').on('keyup', event => {
       const val = $(event.currentTarget).val();
@@ -142,8 +128,8 @@ const shoppingList = (function(){
 
   // public methods
   function render() {
-    // Filter item list if store prop is true by item.checked === false
     let items = store.items;
+    // if store.hideCheckedItems is true (checkbox clicked on the page), the new value of items is a list of items whose item.checked value is false
     if (store.hideCheckedItems) {
       items = store.items.filter(item => !item.checked);
     }
@@ -173,7 +159,7 @@ const shoppingList = (function(){
   // This object contains the only exposed methods from this module:
   // everything inside the return becomes a global value
   return {
-    render: render,
-    bindEventListeners: bindEventListeners,
+    render,
+    bindEventListeners
   };
 }());
